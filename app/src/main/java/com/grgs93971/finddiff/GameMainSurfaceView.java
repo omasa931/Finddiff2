@@ -16,20 +16,23 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class GameMainSurfaceView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
+    //Log用
+    private final String TAG = "GameMainSurfaceView:";
     //Context
     private Context mContext;
     //サーフェイスの大きさやフォーマットを変えたり、描画するインターフェイス
     private SurfaceHolder holder;
     //描画に使うスレッド
-    private Thread thread;
+    private static Thread thread;
 
-    private boolean mThread;
+    private static boolean mThread;
     //描画用ペイント
     private Paint paint = new Paint();
     // bitmap
@@ -50,6 +53,7 @@ public class GameMainSurfaceView extends SurfaceView implements SurfaceHolder.Ca
     private ArrayList<Integer> ansYPoslist = new ArrayList();
 
     private final int RADIUS  = 30;
+    private int rightAns = 0;
     /**
      * コンストラクタ
      *
@@ -86,22 +90,23 @@ public class GameMainSurfaceView extends SurfaceView implements SurfaceHolder.Ca
         ansXPoslist.add(0, new Integer("40"));
         ansYPoslist.add(0, new Integer("40"));
 
-        ansXPoslist.add(1, new Integer("300"));
-        ansYPoslist.add(1, new Integer("400"));
+//        ansXPoslist.add(1, new Integer("300"));
+//        ansYPoslist.add(1, new Integer("400"));
 
-        ansXPoslist.add(2, new Integer("500"));
-        ansYPoslist.add(2, new Integer("500"));
-
-        ansXPoslist.add(3, new Integer("600"));
-        ansYPoslist.add(3, new Integer("100"));
-
-        ansXPoslist.add(4, new Integer("700"));
-        ansYPoslist.add(4, new Integer("400"));
+//        ansXPoslist.add(2, new Integer("500"));
+//        ansYPoslist.add(2, new Integer("500"));
+//
+//        ansXPoslist.add(3, new Integer("600"));
+//        ansYPoslist.add(3, new Integer("100"));
+//
+//        ansXPoslist.add(4, new Integer("700"));
+//        ansYPoslist.add(4, new Integer("400"));
     }
 
     /*サーフェイスが初めて作られたときに呼ばれる、*/
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        Log.i(TAG, "surfaceCreated(SurfaceHolder holder)");
         bitmapSrc1 = BitmapFactory.decodeResource(getResources(), R.drawable.dummy);
         bitmapSrc2 = BitmapFactory.decodeResource(getResources(), R.drawable.dummy);
 
@@ -135,12 +140,14 @@ public class GameMainSurfaceView extends SurfaceView implements SurfaceHolder.Ca
     /*サーフェイスの大きさやフォーマットが変わった時の処理*/
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height){
+        Log.i(TAG, "surfaceChanged(SurfaceHolder holder, int format, int width, int height)");
         thread.start();
     }
 
     /*サーフェイスが壊される直前に呼ばれる。*/
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
+        Log.i(TAG, "surfaceDestroyed(SurfaceHolder holder)");
         mThread = false;
         while( thread != null && thread.isAlive());
         thread = null;
@@ -149,6 +156,7 @@ public class GameMainSurfaceView extends SurfaceView implements SurfaceHolder.Ca
     /**描画スレッドを実行する。*/
     @Override
     public void run() {
+        Log.i(TAG, "run()");
         Canvas canvas = null;
 
         while (mThread) {
@@ -211,17 +219,38 @@ public class GameMainSurfaceView extends SurfaceView implements SurfaceHolder.Ca
                         ansXPoslist.remove(i);
                         ansYPoslist.remove(i);
 
+                        //正解数をカウントアップ
+                        rightAns++;
                         Log.d("残正解数：", String.valueOf(ansXPoslist.size()));
                     }
                 }
-
                 break;
+        }
+
+        TextView tv = (TextView)((Activity)mContext).findViewById(R.id.count1);
+        tv.setText(String.valueOf(rightAns));
+
+        // 全問正解したらスレッドを停止
+        if (ansXPoslist.size() == 0) {
+            mThread = false;
         }
 
         return super.onTouchEvent(event);
     }
 
-    private int getStartXpos(int bitmapWidth) {
+    public void finishLoop() {
+        Log.i(TAG, "finishLoop()");
+        synchronized (thread) {
+            mThread = false;
+        }
+        try{
+            thread.join();
+        } catch( InterruptedException ex ){
+            Thread.currentThread().interrupt();
+        }
+    }
+
+        private int getStartXpos(int bitmapWidth) {
 
         Activity activity = (Activity)this.getContext();
         DisplaySizeCheck ds = new DisplaySizeCheck();
