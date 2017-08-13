@@ -21,7 +21,9 @@
         android:id="@+id/count1"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:textSize="@dimen/text_size"
         android:text="0"
+        android:layout_marginLeft="20dp"
         android:layout_above="@id/adView3">
     </TextView>
 
@@ -29,6 +31,7 @@
         android:id="@+id/count2"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:textSize="@dimen/text_size"
         android:text="/"
         android:layout_above="@id/adView3"
         android:layout_toRightOf="@id/count1">
@@ -38,15 +41,27 @@
         android:id="@+id/count3"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
+        android:textSize="@dimen/text_size"
         android:text="5"
         android:layout_above="@id/adView3"
         android:layout_toRightOf="@id/count2">
     </TextView>
 
+    <TextView
+        android:id="@+id/stagename"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:textSize="@dimen/text_size"
+        android:layout_marginRight="20dp"
+        android:text="Stage 1"
+        android:layout_above="@id/adView3"
+        android:layout_alignParentRight="true">
+    </TextView>
+
     <com.grgs93971.finddiff.GameMainSurfaceView
         android:id="@+id/GameMainSurfaceView"
         android:layout_width="fill_parent"
-        android:layout_height="500dp">
+        android:layout_height="480dp">
     </com.grgs93971.finddiff.GameMainSurfaceView>
 
 </RelativeLayout>

@@ -26,6 +26,7 @@ public class SelectStageActivity extends AppCompatActivity {
                 Toast.makeText(SelectStageActivity.this, "" + position, Toast.LENGTH_SHORT).show();
                 //ゲームメイン画面に遷移
                 Intent intent = new Intent(getApplication(), GameMainActivity.class);
+                intent.putExtra("STAGE_NO", String.valueOf(position + 1));
                 startActivity(intent);
             }
         });

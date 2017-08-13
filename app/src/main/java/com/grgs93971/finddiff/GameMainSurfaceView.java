@@ -52,6 +52,8 @@ public class GameMainSurfaceView extends SurfaceView implements SurfaceHolder.Ca
     private ArrayList<Integer> ansXPoslist = new ArrayList();
     private ArrayList<Integer> ansYPoslist = new ArrayList();
 
+    //ステージ番号
+    private String mStagenum;
     private final int RADIUS  = 30;
     private int rightAns = 0;
     /**
@@ -107,8 +109,11 @@ public class GameMainSurfaceView extends SurfaceView implements SurfaceHolder.Ca
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Log.i(TAG, "surfaceCreated(SurfaceHolder holder)");
-        bitmapSrc1 = BitmapFactory.decodeResource(getResources(), R.drawable.dummy);
-        bitmapSrc2 = BitmapFactory.decodeResource(getResources(), R.drawable.dummy);
+
+
+
+        bitmapSrc1 = BitmapFactory.decodeResource(getResources(), getDrawableId());
+        bitmapSrc2 = BitmapFactory.decodeResource(getResources(), getDrawableId2());
 
         Log.d("bitmap 高", String.valueOf(bitmapSrc1.getHeight()));
         Log.d("bitmap 幅", String.valueOf(bitmapSrc1.getWidth()));
@@ -180,8 +185,7 @@ public class GameMainSurfaceView extends SurfaceView implements SurfaceHolder.Ca
         }
     }
 
-    List<Float> pointArray = new ArrayList<Float>();
-    //なぞられた点を記録するリスト
+
     @Override
     public boolean onTouchEvent(MotionEvent event)
     {
@@ -250,7 +254,7 @@ public class GameMainSurfaceView extends SurfaceView implements SurfaceHolder.Ca
         }
     }
 
-        private int getStartXpos(int bitmapWidth) {
+    private int getStartXpos(int bitmapWidth) {
 
         Activity activity = (Activity)this.getContext();
         DisplaySizeCheck ds = new DisplaySizeCheck();
@@ -274,8 +278,41 @@ public class GameMainSurfaceView extends SurfaceView implements SurfaceHolder.Ca
 
     private int getStartYpos2(int bitmapHeight) {
 
-        int yStartPos = getStartYpos1() + bitmapHeight + getStartYpos1();
+        int yStartPos =  bitmapHeight + getStartYpos1();
 
         return yStartPos;
+    }
+
+    private int getDrawableId() {
+        GameMainActivity activity = (GameMainActivity)this.getContext();
+        int num = activity.getStagenum();
+        String stagefilename = "dummy";
+
+        if (num == 1) {
+            stagefilename = "stage1_1";
+        } else if (num == 2) {
+            stagefilename = "stage2_1";
+        } else if (num == 3) {
+            stagefilename = "stage3_1";
+        }
+        int resId = getResources().getIdentifier(stagefilename, "drawable", mContext.getPackageName());
+        return resId;
+    }
+
+    private int getDrawableId2() {
+
+        GameMainActivity activity = (GameMainActivity)this.getContext();
+        int num = activity.getStagenum();
+        String stagefilename = "dummy";
+
+        if (num == 1) {
+            stagefilename = "stage1_2";
+        } else if (num == 2) {
+            stagefilename = "stage2_2";
+        } else if (num == 3) {
+            stagefilename = "stage3_2";
+        }
+        int resId = getResources().getIdentifier(stagefilename, "drawable", mContext.getPackageName());
+        return resId;
     }
 }

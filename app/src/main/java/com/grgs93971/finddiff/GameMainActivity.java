@@ -1,17 +1,13 @@
 package com.grgs93971.finddiff;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 public class GameMainActivity extends AppCompatActivity {
@@ -19,6 +15,7 @@ public class GameMainActivity extends AppCompatActivity {
     private final String TAG = "GameMainActivity:";
     private SurfaceView surfaceView;
     private GameMainSurfaceView mainSurfaceView;
+    private String mStagenum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +23,13 @@ public class GameMainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_gamemain);
 
         surfaceView = (SurfaceView) findViewById(R.id.GameMainSurfaceView);
+
+        Intent intent = getIntent();
+        mStagenum = intent.getStringExtra("STAGE_NO");
         mainSurfaceView = new GameMainSurfaceView(this);
 
-        //setContentView(mainSurfaceView);
+        TextView tv = (TextView)findViewById(R.id.stagename);
+        tv.setText("Stage " + mStagenum);
 
         AdView mAdView = (AdView) findViewById(R.id.adView3);
         mAdView.loadAd(admobUtil.getAdRequest());
@@ -40,7 +41,6 @@ public class GameMainActivity extends AppCompatActivity {
         TextView tv = (TextView)findViewById(R.id.count1);
         if (tv.getText().toString().equals("1")) {
             mainSurfaceView.finishLoop();
-            moveTaskToBack(true);
             Intent intent = new Intent(getApplication(), FinishStageActivity.class);
             startActivity(intent);
         }
@@ -75,5 +75,9 @@ public class GameMainActivity extends AppCompatActivity {
         Log.i(TAG, "onDestroy()");
         super.onDestroy();
         getDelegate().onDestroy();
+    }
+
+    public int getStagenum() {
+        return Integer.parseInt(mStagenum);
     }
 }
