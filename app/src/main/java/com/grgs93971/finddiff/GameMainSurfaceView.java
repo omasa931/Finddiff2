@@ -89,28 +89,17 @@ public class GameMainSurfaceView extends SurfaceView implements SurfaceHolder.Ca
         holder = getHolder();
         holder.addCallback(this);
         paint.setColor(Color.BLUE);
-        ansXPoslist.add(0, new Integer("40"));
-        ansYPoslist.add(0, new Integer("40"));
 
-//        ansXPoslist.add(1, new Integer("300"));
-//        ansYPoslist.add(1, new Integer("400"));
+        GameMainActivity activity = (GameMainActivity)this.getContext();
+        ansXPoslist = activity.getXposList();
+        ansYPoslist = activity.getYposList();
 
-//        ansXPoslist.add(2, new Integer("500"));
-//        ansYPoslist.add(2, new Integer("500"));
-//
-//        ansXPoslist.add(3, new Integer("600"));
-//        ansYPoslist.add(3, new Integer("100"));
-//
-//        ansXPoslist.add(4, new Integer("700"));
-//        ansYPoslist.add(4, new Integer("400"));
     }
 
     /*サーフェイスが初めて作られたときに呼ばれる、*/
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Log.i(TAG, "surfaceCreated(SurfaceHolder holder)");
-
-
 
         bitmapSrc1 = BitmapFactory.decodeResource(getResources(), getDrawableId());
         bitmapSrc2 = BitmapFactory.decodeResource(getResources(), getDrawableId2());
@@ -177,8 +166,11 @@ public class GameMainSurfaceView extends SurfaceView implements SurfaceHolder.Ca
 //                bitmap1.recycle();
 //                bitmap2.recycle();
 
+                paint.setStyle(Paint.Style.STROKE);
+                paint.setStrokeWidth(5);
+                paint.setColor(Color.RED);
                 for (int i = 0; i < xPoslist.size(); i++) {
-                    canvas.drawCircle(xPoslist.get(i), yPoslist.get(i), 40.f, new Paint());
+                    canvas.drawCircle(xPoslist.get(i), yPoslist.get(i), 40.f, paint);
                 }
                holder.unlockCanvasAndPost(canvas);
             }
@@ -312,7 +304,7 @@ public class GameMainSurfaceView extends SurfaceView implements SurfaceHolder.Ca
         } else if (num == 3) {
             stagefilename = "stage3_2";
         }
-        int resId = getResources().getIdentifier(stagefilename, "drawable", mContext.getPackageName());
+            int resId = getResources().getIdentifier(stagefilename, "drawable", mContext.getPackageName());
         return resId;
     }
 }

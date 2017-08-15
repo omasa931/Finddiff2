@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 
 public class FinishStageActivity extends Activity {
@@ -20,7 +19,7 @@ public class FinishStageActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finishstage);
 
-        Button toTopBtn = (Button)findViewById(R.id.toTop);
+        ImageButton toTopBtn = (ImageButton)findViewById(R.id.toTop);
         toTopBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -29,7 +28,7 @@ public class FinishStageActivity extends Activity {
             }
         });
 
-        Button toSelectBtn = (Button)findViewById(R.id.toSelect);
+        ImageButton toSelectBtn = (ImageButton)findViewById(R.id.toSelect);
         toSelectBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -6,13 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-/**
- * Created by masaki on 2017/08/01.
- */
+
 
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
@@ -53,24 +50,7 @@ public class ImageAdapter extends BaseAdapter {
         public TextView textView;
     }
 
-    // references to our images
-    private Integer[] mThumbIds = {
-            R.drawable.stageselthum,
-            R.drawable.stageselthum,
-            R.drawable.stageselthum,
-
-            R.drawable.stageselthum,
-            R.drawable.stageselthum,
-            R.drawable.stageselthum,
-
-            R.drawable.stageselthum,
-            R.drawable.stageselthum,
-            R.drawable.stageselthum,
-
-            R.drawable.stageselthum,
-            R.drawable.stageselthum,
-            R.drawable.stageselthum
-    };
+    private int[] mThumbIds = new int[FinddiffConst.STAGE_COUNT];
 
     // Adapterから参照される新しいImageViewを作成
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -86,9 +66,23 @@ public class ImageAdapter extends BaseAdapter {
             holder = (ViewHolder)convertView.getTag();
         }
 
+        for (int i = 0 ; i < FinddiffConst.STAGE_COUNT; i++) {
+            mThumbIds[i] = getStageThumId(i+1);
+        }
+
         holder.imageView.setImageResource(mThumbIds[position]);
         holder.textView.setText(titleArray[position]);
+        holder.textView.setTextSize(1f);
 
         return convertView;
+    }
+
+
+
+    private int getStageThumId(int stageno) {
+
+        String stagefilename = "stgthum" + stageno;
+        int resId = mContext.getResources().getIdentifier(stagefilename, "drawable", mContext.getPackageName());
+        return resId;
     }
 }
