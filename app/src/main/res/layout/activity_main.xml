@@ -15,6 +15,13 @@
         android:layout_height="wrap_content"
         android:background="@drawable/start_buttons" />
 
+    <ImageButton
+        android:id="@+id/help_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/start_button"
+        android:background="@drawable/help_buttons" />
+
     <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
         android:layout_width="wrap_content"
