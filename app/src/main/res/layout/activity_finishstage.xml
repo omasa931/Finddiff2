@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:ads="http://schemas.android.com/apk/res-auto"
     android:background="#2f000000"
@@ -9,24 +9,29 @@
     android:gravity="center"
     >
 
-    <TextView
+    <ImageButton
         android:id="@+id/clearmsg"
-        android:textSize="@dimen/text_size"
-        android:text="Stage Clear !!"
+        android:scaleType="centerCrop"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@drawable/stgclear"
+        android:layout_marginBottom="10dp"/>
+
     <ImageButton
         android:id="@+id/toTop"
         android:scaleType="centerCrop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/top_buttons" />
+        android:background="@drawable/top_buttons"
+        android:layout_below="@+id/clearmsg"
+        android:layout_marginBottom="20dp"/>
 
     <ImageButton
         android:id="@+id/toSelect"
         android:scaleType="centerCrop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/selstg_buttons" />
+        android:background="@drawable/selstg_buttons"
+        android:layout_below="@+id/toTop"/>
 
-</LinearLayout>
+</RelativeLayout>

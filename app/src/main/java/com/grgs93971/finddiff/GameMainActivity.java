@@ -41,6 +41,7 @@ public class GameMainActivity extends AppCompatActivity {
         // setDatabase(mStagenum);
         //データベースヘルパーのインスタンスを作成する（まだデータベースはできない）
         DataBaseHelper dbHelper = new DataBaseHelper(this);
+        this.deleteDatabase(dbHelper.getDatabaseName());
         //データベースオブジェクトを取得する（データベースにアクセスすると作成される。）
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 //        dbHelper.onCreate(db);

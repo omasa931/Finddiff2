@@ -183,7 +183,7 @@ public class GameMainSurfaceView extends SurfaceView implements SurfaceHolder.Ca
     {
         switch(event.getAction()){
             case MotionEvent.ACTION_DOWN:
-                Log.d("X:Y", event.getX() + ":" + event.getY());
+                Log.i("X:Y", event.getX() + ":" + event.getY());
 
                 int touchXpos = (int)event.getX();
                 int touchYpos = (int)event.getY();
@@ -280,13 +280,8 @@ public class GameMainSurfaceView extends SurfaceView implements SurfaceHolder.Ca
         int num = activity.getStagenum();
         String stagefilename = "dummy";
 
-        if (num == 1) {
-            stagefilename = "stage1_1";
-        } else if (num == 2) {
-            stagefilename = "stage2_1";
-        } else if (num == 3) {
-            stagefilename = "stage3_1";
-        }
+        stagefilename = "stage"+ num  + "_1";
+
         int resId = getResources().getIdentifier(stagefilename, "drawable", mContext.getPackageName());
         return resId;
     }
@@ -297,14 +292,8 @@ public class GameMainSurfaceView extends SurfaceView implements SurfaceHolder.Ca
         int num = activity.getStagenum();
         String stagefilename = "dummy";
 
-        if (num == 1) {
-            stagefilename = "stage1_2";
-        } else if (num == 2) {
-            stagefilename = "stage2_2";
-        } else if (num == 3) {
-            stagefilename = "stage3_2";
-        }
-            int resId = getResources().getIdentifier(stagefilename, "drawable", mContext.getPackageName());
+        stagefilename = "stage"+ num  + "_2";
+        int resId = getResources().getIdentifier(stagefilename, "drawable", mContext.getPackageName());
         return resId;
     }
 }

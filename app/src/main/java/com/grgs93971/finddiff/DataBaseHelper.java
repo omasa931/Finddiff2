@@ -36,6 +36,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.i(TAG, "onCreate(SQLiteDatabase db)");
+
         try {
             execSql(db,"sql/create");
         } catch (IOException e) {

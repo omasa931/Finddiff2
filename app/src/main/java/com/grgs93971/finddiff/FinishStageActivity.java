@@ -33,9 +33,23 @@ public class FinishStageActivity extends Activity {
         interstitial.setAdUnitId(ad);
         interstitial.loadAd(admobUtil.getAdRequest());
         interstitial.setAdListener(new AdListener() {
+            //広告がロードできた時
             @Override
             public void onAdLoaded() {
+                super.onAdLoaded();
                 displayInterstitial();
+            }
+
+            //広告がロードできなかった時
+            @Override
+            public void onAdFailedToLoad(int i) {
+                super.onAdFailedToLoad(i);
+            }
+
+            //広告が閉じられた時
+            @Override
+            public void onAdClosed() {
+                super.onAdClosed();
             }
         });
         ImageButton toTopBtn = (ImageButton)findViewById(R.id.toTop);
@@ -43,24 +57,15 @@ public class FinishStageActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-//                if (appInstalledOrNot(getApplicationContext(), "com.twitter.android")) {
-//                    String url = "twitter://post?message=test";
-//                    Intent intent = new Intent(Intent.ACTION_VIEW);
-//                    intent.setData(Uri.parse(url));
-//                    startActivity(intent);
-//                } else {
-//                    Log.d("TAG", "Twitter is not");
-//                }
-
                 Intent intent = new Intent(getApplication(), MainActivity.class);
                 startActivity(intent);
-                if (interstitial.isLoaded()) {
-                    interstitial.show();
-                } else if (interstitial.isLoading()) {
-                    Log.d("TAG", "The interstitial is loading.");
-                } else {
-                    Log.d("TAG", "The interstitial wasn't loaded yet.");
-                }
+//                if (interstitial.isLoaded()) {
+//                    interstitial.show();
+//                } else if (interstitial.isLoading()) {
+//                    Log.d("TAG", "The interstitial is loading.");
+//                } else {
+//                    Log.d("TAG", "The interstitial wasn't loaded yet.");
+//                }
             }
         });
 
