@@ -14,23 +14,14 @@ import android.widget.TextView;
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mLayoutInflater;
-    private String[] titleArray = {
-            "stage1",
-            "stage2",
-            "stage3",
-            "stage4",
-            "stage5",
-            "stage6",
-            "stage7",
-            "stage8",
-            "stage9",
-            "stage10",
-            "stage11",
-            "stage12"
-    };
+    private String[] titleArray = new String [FinddiffConst.STAGE_COUNT];
+
     public ImageAdapter(Context context) {
         mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
+        for (int i = 0; i < FinddiffConst.STAGE_COUNT ; i++) {
+            titleArray[i] = "stage" + (i + 1);
+        }
     }
 
     public int getCount() {

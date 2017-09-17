@@ -34,13 +34,37 @@
             android:layout_centerHorizontal="true" />
 
         <ImageButton
+            android:id="@+id/fb_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fb_logo"
+            android:layout_below="@+id/start_button"
+            android:layout_toStartOf="@+id/start_button"
+            android:layout_marginTop="77dp" />
+
+        <ImageButton
+            android:id="@+id/tw_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/tw_logo"
+            android:layout_alignTop="@+id/fb_logo"
+            android:layout_centerHorizontal="true" />
+
+        <ImageButton
+            android:id="@+id/line_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/line_logo"
+            android:layout_alignTop="@+id/tw_logo"
+            android:layout_toEndOf="@+id/start_button" />
+        <!--ImageButton
             android:id="@+id/help_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/help_buttons"
             android:layout_marginTop="21dp"
             android:layout_below="@+id/start_button"
-            android:layout_alignStart="@+id/start_button" />
+            android:layout_alignStart="@+id/start_button" / -->
     </RelativeLayout>
 
 

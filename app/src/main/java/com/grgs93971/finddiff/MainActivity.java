@@ -1,7 +1,13 @@
 package com.grgs93971.finddiff;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Point;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,8 +18,15 @@ import android.widget.RelativeLayout;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.List;
 
+public class MainActivity extends AppCompatActivity {
+    private final int GMAIL_ID = 0;
+    private final int LINE_ID = 1;
+    private final int FACEBOOK_ID = 2;
+    private final int TWITTER_ID = 3;
+    private final String[] sharePackages = {"com.google.android.gm","jp.naver.line.android","com.facebook.katana","com.twitter.android"};
+    String activityName = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,6 +38,71 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplication(), SelectStageActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        // Line 改行コードが入っていると不正なコードがはいっている旨のアラートがでて投稿できない
+        findViewById(R.id.line_logo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isShareAppInstall(LINE_ID)){
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse("line://msg/text/" + "Find the Difference"));
+                    startActivity(intent);
+                }else{
+                    shareAppDl(LINE_ID);
+                }
+            }
+        });
+
+        /** facebook
+         https://developers.facebook.com/policy/
+         ポリシー上 Facebook公式アプリにインテントを飛ばす際は、アプリ側から投稿の文字等はアプリ側から設定出来ない
+         以下のソースは、Facebook公式アプリに共有URLしたいURLを飛ばしている それならIntentから送れる*/
+        findViewById(R.id.fb_logo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PackageManager pm = getPackageManager();
+                Intent intent = new Intent( Intent.ACTION_SEND );
+                intent.setType("text/plain");
+                List<ResolveInfo> resolves = pm.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+                ActivityInfo activityinfo = null;
+                for (ResolveInfo info: resolves) {
+                    activityinfo = info.activityInfo;
+                    if (activityinfo.packageName.equals(sharePackages[FACEBOOK_ID])) {
+                        activityName = activityinfo.name;
+                        break;
+                    }
+                }
+
+                // Facebook公式アプリがインストールされてない
+                if (activityName == null) {
+                    shareAppDl(FACEBOOK_ID);
+                }
+
+                // 呼び出す
+                ComponentName componentName = new ComponentName(sharePackages[FACEBOOK_ID], activityName);
+                intent.setComponent(componentName)
+                        .putExtra(Intent.EXTRA_TEXT, "");
+                startActivity(intent);
+            }
+        });
+
+        // Twitter
+        findViewById(R.id.tw_logo).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isShareAppInstall(TWITTER_ID)){
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_SEND);
+                    intent.setPackage(sharePackages[TWITTER_ID]);
+                    intent.setType("image/png");
+                    intent.putExtra(Intent.EXTRA_TEXT, "Find the Difference");
+                    startActivity(intent);
+                }else{
+                    shareAppDl(TWITTER_ID);
+                }
             }
         });
 
@@ -52,5 +130,23 @@ public class MainActivity extends AppCompatActivity {
 //        text.append("\nHardwareSize → X:" + real.x + " Y:" + real.y);
 //
 //        dipSize.setText(text.toString());
+    }
+
+    // アプリがインストールされているかチェック
+    private Boolean isShareAppInstall(int shareId){
+        try {
+            PackageManager pm = getPackageManager();
+            pm.getApplicationInfo(sharePackages[shareId], PackageManager.GET_META_DATA);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
+
+    // アプリが無かったのでGooglePalyに飛ばす
+    private void shareAppDl(int shareId){
+        Uri uri = Uri.parse("market://details?id=" + sharePackages[shareId]);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
     }
 }

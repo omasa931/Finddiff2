@@ -36,7 +36,7 @@ public class FinishStageActivity extends Activity {
             //広告がロードできた時
             @Override
             public void onAdLoaded() {
-                super.onAdLoaded();
+                //super.onAdLoaded();
                 displayInterstitial();
             }
 
@@ -59,13 +59,7 @@ public class FinishStageActivity extends Activity {
 
                 Intent intent = new Intent(getApplication(), MainActivity.class);
                 startActivity(intent);
-//                if (interstitial.isLoaded()) {
-//                    interstitial.show();
-//                } else if (interstitial.isLoading()) {
-//                    Log.d("TAG", "The interstitial is loading.");
-//                } else {
-//                    Log.d("TAG", "The interstitial wasn't loaded yet.");
-//                }
+
             }
         });
 
@@ -82,9 +76,9 @@ public class FinishStageActivity extends Activity {
     }
     // インタースティシャルを表示する準備ができたら、displayInterstitial() を呼び出す。
     public void displayInterstitial() {
-        if (interstitial.isLoaded()) {
-            interstitial.show();
-        }
+//        if (interstitial.isLoaded()) {
+//            interstitial.show();
+//        }
     }
 
     boolean appInstalledOrNot(Context context, String uri) {
