@@ -32,6 +32,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/selstg_buttons"
-        android:layout_below="@+id/toTop"/>
+        android:layout_below="@+id/clearmsg"
+        android:layout_alignStart="@+id/toTop"
+        android:layout_marginTop="49dp" />
 
 </RelativeLayout>

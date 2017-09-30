@@ -3,7 +3,6 @@ package com.grgs93971.finddiff;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.graphics.Point;
@@ -13,11 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
-
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
-
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -48,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                 if(isShareAppInstall(LINE_ID)){
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_VIEW);
-                    intent.setData(Uri.parse("line://msg/text/" + "Find the Difference"));
+                    intent.setData(Uri.parse("line://msg/text/" + MsgUtil.getLinMsg()));
                     startActivity(intent);
                 }else{
                     shareAppDl(LINE_ID);
@@ -79,13 +74,15 @@ public class MainActivity extends AppCompatActivity {
                 // Facebook公式アプリがインストールされてない
                 if (activityName == null) {
                     shareAppDl(FACEBOOK_ID);
-                }
 
-                // 呼び出す
-                ComponentName componentName = new ComponentName(sharePackages[FACEBOOK_ID], activityName);
-                intent.setComponent(componentName)
-                        .putExtra(Intent.EXTRA_TEXT, "");
-                startActivity(intent);
+                } else {
+
+                    // 呼び出す
+                    ComponentName componentName = new ComponentName(sharePackages[FACEBOOK_ID], activityName);
+                    intent.setComponent(componentName)
+                            .putExtra(Intent.EXTRA_TEXT, MsgUtil.APP_URL);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -93,12 +90,13 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.tw_logo).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(isShareAppInstall(TWITTER_ID)){
+                if(isShareAppInstall(TWITTER_ID)){;
+
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_SEND);
                     intent.setPackage(sharePackages[TWITTER_ID]);
                     intent.setType("image/png");
-                    intent.putExtra(Intent.EXTRA_TEXT, "Find the Difference");
+                    intent.putExtra(Intent.EXTRA_TEXT, MsgUtil.getTweeterMsg());
                     startActivity(intent);
                 }else{
                     shareAppDl(TWITTER_ID);

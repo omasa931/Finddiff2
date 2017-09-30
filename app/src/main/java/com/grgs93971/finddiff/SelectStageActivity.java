@@ -6,9 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
-
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
 
@@ -23,7 +20,7 @@ public class SelectStageActivity extends AppCompatActivity {
 
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView parent, View v, int position, long id) {
-                Toast.makeText(SelectStageActivity.this, "" + position, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(SelectStageActivity.this, "" + position, Toast.LENGTH_SHORT).show();
                 //ゲームメイン画面に遷移
                 Intent intent = new Intent(getApplication(), GameMainActivity.class);
                 intent.putExtra("STAGE_NO", String.valueOf(position + 1));

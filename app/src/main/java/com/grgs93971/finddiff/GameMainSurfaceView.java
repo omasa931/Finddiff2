@@ -8,19 +8,15 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Point;
-import android.graphics.PointF;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.TextView;
-
 import java.util.ArrayList;
-import java.util.List;
-
 
 public class GameMainSurfaceView extends SurfaceView implements SurfaceHolder.Callback, Runnable {
     //Log用
@@ -91,8 +87,8 @@ public class GameMainSurfaceView extends SurfaceView implements SurfaceHolder.Ca
         paint.setColor(Color.BLUE);
 
         GameMainActivity activity = (GameMainActivity)this.getContext();
-        ansXPoslist = activity.getXposList();
-        ansYPoslist = activity.getYposList();
+//        ansXPoslist = activity.getXposList();
+//        ansYPoslist = activity.getYposList();
 
     }
 
@@ -100,9 +96,11 @@ public class GameMainSurfaceView extends SurfaceView implements SurfaceHolder.Ca
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         Log.i(TAG, "surfaceCreated(SurfaceHolder holder)");
-
-        bitmapSrc1 = BitmapFactory.decodeResource(getResources(), getDrawableId());
-        bitmapSrc2 = BitmapFactory.decodeResource(getResources(), getDrawableId2());
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inScaled = true;
+        bitmapSrc1 = BitmapFactory.decodeResource(getResources(), getDrawableId(), options);
+        bitmapSrc2 = BitmapFactory.decodeResource(getResources(), getDrawableId2(), options);
+        int hoseiWidth = 0; // 画像横位置の補正
 
         Log.d("bitmap 高", String.valueOf(bitmapSrc1.getHeight()));
         Log.d("bitmap 幅", String.valueOf(bitmapSrc1.getWidth()));
@@ -110,25 +108,57 @@ public class GameMainSurfaceView extends SurfaceView implements SurfaceHolder.Ca
         Log.d("bitmap 高2", String.valueOf(DispUtil.convertPx2Dp(bitmapSrc1.getHeight(), mContext)));
         Log.d("bitmap 幅2", String.valueOf(DispUtil.convertPx2Dp(bitmapSrc1.getWidth(), mContext)));
 
-        int w1 = bitmapSrc1.getWidth();
-        int h1 = bitmapSrc1.getHeight();
-        float w2 = DispUtil.convertPx2Dp(bitmapSrc1.getWidth(), mContext);
-        float h2 = DispUtil.convertPx2Dp(bitmapSrc1.getHeight(), mContext);
-        float scaleWidth = w2 / w1;
-        float scaleHeight = h2 / h1;
-        float scaleFactor = Math.min(scaleWidth, scaleHeight);
+        int w1 = bitmapSrc1.getWidth();         // 元画像の幅
+        int h1 = bitmapSrc1.getHeight();        // 元画像の高さ
+        float w2 = DispUtil.convertPx2Dp(bitmapSrc1.getWidth(), mContext);      //PX⇒DP
+        float h2 = DispUtil.convertPx2Dp(bitmapSrc1.getHeight(), mContext);     //PX⇒DP
+
+        DisplayMetrics metrics = DispUtil.getDisplayMetrics((GameMainActivity)this.getContext());
+        float screenWidth = (float) metrics.widthPixels;       //端末のサイズ（幅）
+        float screenHeight = (float) metrics.heightPixels;     //端末のサイズ（高）
+
         Matrix scale = new Matrix();
+        float scaleWidth = w2 / w1;     //画像の幅／端末の幅
+        float scaleHeight = h2 / h1;    //画像の高／端末の高
+        float scaleFactor = Math.min(scaleWidth, scaleHeight);
         scale.postScale(scaleFactor, scaleFactor);
 
-        xPos = getStartXpos((int)w2);
-        yPos2 = getStartYpos2((int)h2);
+        xPos = getStartXpos((int) w2);      //開始位置(X)
+        yPos2 = getStartYpos2((int) h2);    //開始位置(下段画像)
 
-        bitmap1 = Bitmap.createBitmap(bitmapSrc1, 0, 0, w1, h1, scale, false);
-        bitmap2 = Bitmap.createBitmap(bitmapSrc2, 0, 0, w1, h1, scale, false);
+        bitmap1 = Bitmap.createBitmap(bitmapSrc1, 0, 0, w1, h1, scale, false);  //bitmap生成
+        bitmap2 = Bitmap.createBitmap(bitmapSrc2, 0, 0, w1, h1, scale, false);  //bitmap生成
+
+        hoseiWidth = (int)(screenWidth - w2) / 2;
+
+        //端末のサイズ（幅）< 元画像の幅
+        if (screenWidth < w2) {
+
+            float f2 = new Float(FinddiffConst.SMALL_RATE);
+            float scaleFactor2 = Math.min(f2, f2);
+            Matrix scale2 = new Matrix();
+            scale2.postScale(scaleFactor2, scaleFactor2);
+
+            int w3 = (int) ((int)w2 * f2);  //縮小
+            int h3 = (int) ((int)h2 * f2);  //縮小
+            xPos = getStartXpos((int) w3);      //開始位置(X)
+            yPos2 = getStartYpos2((int) h3);    //開始位置(下段画像)
+
+            bitmap1 = Bitmap.createBitmap(bitmap1, 0, 0, (int)w2, (int)h2, scale2, false);  //bitmap生成
+            bitmap2 = Bitmap.createBitmap(bitmap2, 0, 0, (int)w2, (int)h2, scale2, false);  //bitmap生成
+
+            hoseiWidth = (int)(screenWidth - w3) / 2;
+        }
+
+        ArrayList xlist = ((GameMainActivity)this.getContext()).getXposList();
+
+        for (int i = 0; i < xlist.size(); i++) {
+            ansXPoslist.add(i, ((Integer)xlist.get(i) + hoseiWidth));
+        }
+        ansYPoslist = ((GameMainActivity)this.getContext()).getYposList();
 
         mThread = true;
         thread = new Thread(this);
-
     }
 
     /*サーフェイスの大きさやフォーマットが変わった時の処理*/

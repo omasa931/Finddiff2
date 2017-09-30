@@ -2,14 +2,13 @@ package com.grgs93971.finddiff;
 
 
 import android.content.Context;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-
 
 public class ImageAdapter extends BaseAdapter {
     private Context mContext;
@@ -20,7 +19,7 @@ public class ImageAdapter extends BaseAdapter {
         mContext = context;
         mLayoutInflater = LayoutInflater.from(context);
         for (int i = 0; i < FinddiffConst.STAGE_COUNT ; i++) {
-            titleArray[i] = "stage" + (i + 1);
+            titleArray[i] = "Stage" + (i + 1);
         }
     }
 
@@ -63,7 +62,7 @@ public class ImageAdapter extends BaseAdapter {
 
         holder.imageView.setImageResource(mThumbIds[position]);
         holder.textView.setText(titleArray[position]);
-        holder.textView.setTextSize(1f);
+        holder.textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mContext.getResources().getDimension(R.dimen.text_size10));
 
         return convertView;
     }

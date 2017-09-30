@@ -1,20 +1,19 @@
 package com.grgs93971.finddiff;
 
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
 
 import com.google.android.gms.ads.AdListener;
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 
 public class FinishStageActivity extends Activity {
@@ -26,7 +25,6 @@ public class FinishStageActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_finishstage);
-
 
         interstitial = new InterstitialAd(this);
         String  ad = getResources().getString(R.string.interstitial_ad_unit_id);
@@ -71,8 +69,6 @@ public class FinishStageActivity extends Activity {
                 startActivity(intent);
             }
         });
-
-
     }
     // インタースティシャルを表示する準備ができたら、displayInterstitial() を呼び出す。
     public void displayInterstitial() {
